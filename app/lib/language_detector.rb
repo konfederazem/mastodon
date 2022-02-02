@@ -96,6 +96,6 @@ class LanguageDetector
   end
 
   def default_locale(account)
-    account.user_locale&.to_sym || I18n.default_locale if account.local?
+    account.user.preferred_content_locale&.to_sym if account.local? && account.user.present?
   end
 end

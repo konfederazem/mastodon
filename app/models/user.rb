@@ -261,7 +261,7 @@ class User < ApplicationRecord
     settings.notification_emails['pending_account']
   end
 
-  def allows_trending_tag_emails?
+  def allows_trends_review_emails?
     settings.notification_emails['trending_tag']
   end
 
@@ -275,6 +275,17 @@ class User < ApplicationRecord
 
   def shows_application?
     @shows_application ||= settings.show_application
+  end
+
+  def preferred_content_locale
+    return @preferred_content_locale if defined?(@preferred_content_locale)
+
+    @preferred_content_locale = begin
+      original_locale  = (locale || I18n.default_locale)
+      language_code,   = original_locale.to_s.split(/[_-]/) # Strip out the region from e.g. en_US or ja-JA
+      confirmed_locale = ISO_639.find(language_code)
+      confirmed_locale&.alpha2 || original_locale
+    end
   end
 
   def token_for_app(app)
