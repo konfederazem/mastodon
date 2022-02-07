@@ -75,6 +75,8 @@ jobs:
             - public/assets
             - public/packs-test
           root: .
+      - store_artifacts:
+          path: /home/circleci/project/public/packs-test
 
   test:
     parameters:
